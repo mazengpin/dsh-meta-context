@@ -21,7 +21,7 @@ node verify/host-half.mjs lib/index.js
 node verify/client-bundle.cjs lib/client.js
 ```
 
-Then one registry row in `profiles-info/plugins.json` with `spec: "link:../../plugins-src/dsh-meta-context"`, and `pwsh -File scriptsSync-DshProfilePlugins.ps1 -Profile personal-dev` to write the relative `link:` into the profile.
+Then re-sync the profile with the command your DSH build documents — `dsh plugin sync`, or the profile manager in the web app. No shell-script file and no PowerShell are required by this package.
 
 Nothing else is patched. `dsh.bundle.patch` merges the single additive loader row `meta-context` at boot, and the boot graph serves `lib/client.js` from `exports["./client"]` to the browser, where it registers the one sidebar entry.
 
