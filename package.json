@@ -63,5 +63,10 @@
   "publishConfig": {
     "tag": "next"
   },
-  "status": "pre-release"
+  "status": "pre-release",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mazengpin/dsh-meta-context.git"
+  },
+  "homepage": "https://github.com/mazengpin/dsh-meta-context#readme"
 }
