@@ -98,3 +98,16 @@ node -e "const f='profiles-info/plugins.json';const j=JSON.parse(require('fs').r
 Add the row with any JSON editor or `node -e`; then re-sync the profile with the command your DSH build documents (`dsh plugin sync`, or the profile manager in the web app). No shell-script file and no PowerShell are required by this package, and a step that needs one is a step a Linux user cannot follow.
 
 A `dsh.profile.bundles` change hot-reloads. **A change to this plugin's source needs a host restart** — measured: re-syncing the profile does not reload new plugin code.
+
+## Roadmap at a glance
+
+A glance, not a second record: the authoritative list — with the evidence for every done row, the reason for every deferred one and the rows marked `NOT MEASURED` — is [`ROADMAP.md`](ROADMAP.md). Where this list and that file differ, that file is right and this list is the defect.
+
+- **What this package is**
+- **What is measured today**
+- **What 1.0.0 still requires**
+- **Limits, stated rather than implied**
+- **Compatibility seam**
+- **How this roadmap is graded**
+
+The roadmap currently carries **0** row(s) marked `NOT MEASURED`; a row moves to done only when its own command prints a green result.
