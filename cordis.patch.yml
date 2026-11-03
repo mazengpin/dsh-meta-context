@@ -1,0 +1,26 @@
+# dsh-meta-context bundle patch.
+#
+# `dsh.bundle.patch` in package.json points here. A profile that lists this
+# package in `dsh.profile.bundles` merges this layer at boot, and the single
+# `insert` below mounts the plugin's Host half as the loader row `meta-context`.
+# The row `name` is the package name, so the loader resolves `lib/index.js` (the
+# package's `.` export) from the profile's `node_modules` — which is where the
+# relative `link:` dependency puts this checkout.
+#
+# The row id is `meta-context`, NOT any member's id (`context`, `context-stats`,
+# `context-out-controller`, `fold-admission`, `s1cap`). Every member stays
+# mounted and its own loader row is untouched: D-0352 rule (3) requires the
+# members to stay loaded while the fusion is in progress, so this row is
+# strictly ADDITIVE and removing it restores exactly the profile the owner had.
+#
+# The Client half is not mounted from here. `dsh.client` in package.json marks
+# the package as a Web Client/Host package; the boot graph reads
+# `exports["./client"]` and serves `lib/client.js` to the browser, where it
+# registers itself with
+# `window.__ModuleLoader__.load({ id: 'dsh-meta-context', factory })`.
+#
+# There is exactly one mount source and no disabled/!!js guard, so a profile
+# that consumes this package has exactly one row for it.
+- insert:
+    - id: meta-context
+      name: 'dsh-meta-context'

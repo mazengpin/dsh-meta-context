@@ -1,0 +1,65 @@
+{
+  "name": "dsh-meta-context",
+  "version": "0.9.0",
+  "type": "module",
+  "description": "One fused context surface: a single /meta-context route prefix and one keyed sidebar entry that compose the context family (dsh-context, dsh-context-out-controller, dsh-context-stats, dsh-fold-admission) behind one stable interface, reporting any capability it cannot derive as UNMEASURED with its reason rather than as a zero.",
+  "license": "MIT",
+  "icon": "./icon.svg",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./shared/protocol": "./src/shared/protocol.ts",
+    "./src/*": "./src/*",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "lib/client.js.map",
+    "src",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md",
+    "LICENSE",
+    "ROADMAP.md"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0",
+    "dsh": ">=0.2.2-0 <0.3.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-layout"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "verify": "node verify/host-half.mjs lib/index.js && node verify/client-bundle.cjs lib/client.js",
+    "prepublishOnly": "pnpm run typecheck && pnpm run build && pnpm run verify"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "~18.3.1",
+    "react": "^18.2.0",
+    "tsdown": "^0.22.2",
+    "typescript": "^5.6.0"
+  },
+  "publishConfig": {
+    "tag": "next"
+  },
+  "status": "pre-release"
+}
