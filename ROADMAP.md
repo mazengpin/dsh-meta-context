@@ -12,10 +12,10 @@ Host half `verify/host-half.mjs` 48 of 48 with registry 25 of 25 and verdict PAR
 
 ## What 1.0.0 still requires
 
-1. A typed contract for the context window it publishes, so a consumer can reject a shape instead of reading a string.
-2. One falsifier per published field: a field that cannot be made to disagree with its source is not measured.
-3. Cold-read timing on the panel route stated as a number in the README, not implied.
-4. The `dsh.client.inject` list audited against the slots actually registered, so an injected slot nobody uses is removed.
+1. A typed contract for the context window it publishes, so a consumer can reject a shape instead of reading a string. Checkable: `node verify/host-half.mjs lib/index.js` reports 49 of 49, the added check refusing a payload whose contract field is a bare string.
+2. One falsifier per published field: a field that cannot be made to disagree with its source is not measured. Checkable: `node verify/falsify.mjs` reports 5 of 5 mutations RED and 5 of 5 restores byte-identical, one mutation per published field against 4 today.
+3. Cold-read timing on the panel route stated as a number in the README, not implied. Checkable: README.md carries a cold-read line naming a duration; a missing line, or one without a number, is not done.
+4. The `dsh.client.inject` list audited against the slots actually registered, so an injected slot nobody uses is removed. Checkable: `node verify/client-bundle.cjs lib/client.js` reports the injected count beside the seated count, and the two agree.
 
 ## Limits, stated rather than implied
 
@@ -28,3 +28,5 @@ Consumes `@deepseek-ai/dsh-client-ui-slots` and `@deepseek-ai/dsh-client-locale`
 ## How this roadmap is graded
 
 An item is DONE only when a command proves it and the command is named here. An item that is only described is not done, and a roadmap whose items all read as prose is a plan, not a state.
+
+This roadmap is what the repo's `research.md` tests.

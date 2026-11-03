@@ -28,7 +28,8 @@
     "ROADMAP.md",
     "CONTEXT.md",
     "DISCLOSURE.md",
-    "verify"
+    "verify",
+    "research.md"
   ],
   "engines": {
     "node": "^22.19.0 || >=24.0.0",
