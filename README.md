@@ -8,26 +8,37 @@ One fused surface over the context family: **one route prefix** (`/meta-context/
 
 Built under decision **D-0352**, which makes capability parity — not route count — the acceptance test, and forbids publishing a number the surface cannot derive.
 
-## Install
+## Adopting it inside DSH
 
-Requires Node `^22.19.0 || >=24.0.0` and DSH `>=0.2.2-0 <0.3.0`, both declared under `engines` in `package.json`.
+This section explains adoption; it is not an install procedure. It contains no package-manager command, and the only command it names is the DSH build's own plugin sync.
 
-```sh
-git clone <repo-url> plugins-src/dsh-meta-context
-cd plugins-src/dsh-meta-context
-pnpm install
-pnpm run build          # tsdown writes lib/index.js and lib/client.js
-node verify/host-half.mjs lib/index.js
-node verify/client-bundle.cjs lib/client.js
-```
+**What the package provides.** One route prefix, `/meta-context/api`, and one keyed sidebar entry, composed from five member plugins on their live activation: a parity registry with `file:line` citations, per-scope ceilings, formation freshness, the fold aggregate, the admission probe, the assembly knobs and the meta bundle census. It replaces no member — it adds one loader row.
 
-Then re-sync the profile with the command your DSH build documents — `dsh plugin sync`, or the profile manager in the web app. No shell-script file and no PowerShell are required by this package.
+**What a deployment must already have.**
 
-Nothing else is patched. `dsh.bundle.patch` merges the single additive loader row `meta-context` at boot, and the boot graph serves `lib/client.js` from `exports["./client"]` to the browser, where it registers the one sidebar entry.
+- A DSH profile whose web server serves loopback routes. Every member route is called through the originating request's own `Host` header, so the composer needs no config, no absolute path and no port discovery — and a deployment with no loopback route to reach has nothing to compose.
+- Node `^22.19.0 || >=24.0.0` and DSH `>=0.2.2-0 <0.3.0`, both declared under `engines` in `package.json`.
+- The member plugins themselves. A missing member is reported as `unmeasured` with a reason, never as a zero, so the surface degrades honestly instead of silently.
 
-The members are NOT replaced: `dsh-context`, `dsh-context-out-controller`, `dsh-context-stats` and `dsh-fold-admission` keep their own rows, prefixes and seats. Removing the `meta-context` row restores exactly the profile you had.
+**How a profile enables a package.** A profile enables this package through its bundle list, not through a package manager. `dsh.bundle.patch` merges the single additive loader row `meta-context` at boot, and the boot graph serves `lib/client.js` from `exports["./client"]` to the browser, where it registers the one sidebar entry. A `dsh.profile.bundles` change hot-reloads; a change to this plugin's source needs a host restart — measured: re-syncing the profile does not reload new plugin code.
 
-A `dsh.profile.bundles` change hot-reloads; a change to this plugin source needs a host restart.
+**Steps, in order.**
+
+1. Confirm the prerequisites above, in that order: a loopback-serving web server, the engine range, the member plugins present in the same profile.
+2. Point the profile at the package. A profile consumes a clone through a **relative** `link:` only — the registry entry in `profiles-info/plugins.json` with `spec: "link:../../plugins-src/dsh-meta-context"` is the only spec form; an absolute path is not consumed.
+3. Add the `meta-context` row to that profile's bundle list. Take the registry row count before and after the edit, so a bad edit is a number rather than a suspicion:
+
+   ```
+   node -e "const f='profiles-info/plugins.json';const j=JSON.parse(require('fs').readFileSync(f,'utf8'));console.log('registry rows:',j.plugins.length)"
+   ```
+
+4. Re-sync the profile with the command your DSH build documents — `dsh plugin sync`, or the profile manager in the web app. No shell-script file and no PowerShell are required by this package, and a step that needs one is a step a Linux user cannot follow.
+5. Open the sidebar entry and read the verdict before trusting a number. A `0/0` registry is `BLINDED` and exits non-zero; an unmeasured row without a reason turns the verdict into `GAP`.
+6. Undo by removing the `meta-context` row. The members are NOT replaced: `dsh-context`, `dsh-context-out-controller`, `dsh-context-stats` and `dsh-fold-admission` keep their own rows, prefixes and seats, so removal restores exactly the profile you had.
+
+**A source preview is readable, not installable.** The source tree beside this README is a preview: it is what the package does, with its checks and its limits, and it can be read, diffed and cited. Reading it installs nothing. It is not an installable artifact, and it is not a substitute for the release.
+
+**The published release is what a deployment consumes.** `0.9.0` is published on the `next` dist-tag, not `latest`; the release tarball is the artifact a deployment resolves, and it is a snapshot of a moving surface, so read `ROADMAP.md` before depending on a shape.
 
 ## What it fuses
 
@@ -87,18 +98,6 @@ node verify/falsify.mjs             # mutates source, rebuilds, requires RED, re
 `verify/host-half.mjs` mounts the built handler on a real loopback server beside fake member routes, so the composer's authority resolution and loopback hop are exercised for real. It also checks every cited `file:line` resolves inside the member's clone — a registry of plausible-looking citations that nothing verifies is a caption.
 
 `verify/falsify.mjs` is the check that the harness can disagree: four mutations (dropped route, wrong shape, an unmeasured read republished as a success, a zeroed denominator) must each go red, and every restore is verified byte-identical by sha256.
-
-## Registering it
-
-Registry entry in `profiles-info/plugins.json` with `spec: "link:../../plugins-src/dsh-meta-context"`, then:
-
-```
-node -e "const f='profiles-info/plugins.json';const j=JSON.parse(require('fs').readFileSync(f,'utf8'));console.log('registry rows:',j.plugins.length)"
-```
-
-Add the row with any JSON editor or `node -e`; then re-sync the profile with the command your DSH build documents (`dsh plugin sync`, or the profile manager in the web app). No shell-script file and no PowerShell are required by this package, and a step that needs one is a step a Linux user cannot follow.
-
-A `dsh.profile.bundles` change hot-reloads. **A change to this plugin's source needs a host restart** — measured: re-syncing the profile does not reload new plugin code.
 
 ## Roadmap at a glance
 
