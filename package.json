@@ -25,7 +25,9 @@
     "icon.svg",
     "README.md",
     "LICENSE",
-    "ROADMAP.md"
+    "ROADMAP.md",
+    "CONTEXT.md",
+    "DISCLOSURE.md"
   ],
   "engines": {
     "node": "^22.19.0 || >=24.0.0",
