@@ -48,6 +48,7 @@ import {
   type IndexResponse,
   type ParityResponse,
 } from '../shared/protocol.ts'
+import { bundleOf } from './bundle.ts'
 import { authorityOf, compose } from './compose.ts'
 import type { FoldAdmissionGateLike } from './types.ts'
 
@@ -94,6 +95,7 @@ export const ROUTES: readonly RouteSpec[] = [
   { tail: 'folds', method: 'GET', summary: 'Fold rows, composed live from context-stats.' },
   { tail: 'admission', method: 'GET', summary: 'Drives the member fold-admission gate with a probe (?priced=&retain=).' },
   { tail: 'tuning', method: 'GET', summary: 'The context-assembly knobs, composed live from s1cap.' },
+  { tail: 'bundle', method: 'GET', summary: 'The meta bundle census: which dsh-meta-* packages are present on disk, and which are mounted.' },
 ]
 
 /** Everything the routes read. */
@@ -433,6 +435,12 @@ export function createRouteHandler(
           return
         case 'admission':
           writeJson(res, 200, await admissionOf(deps, url))
+          return
+        case 'bundle':
+          // The meta bundle census reads disk and probes each family root on
+          // THIS server, addressed by this request's own authority. It writes
+          // nothing: no package directory, manifest or route table is touched.
+          writeJson(res, 200, await bundleOf({ authority: authorityOf(req), now: deps.now }))
           return
         case 'tuning':
           // s1cap owns no `api` segment: its route is the fixed literal

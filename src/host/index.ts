@@ -121,6 +121,15 @@ export type {
 } from '../shared/protocol.ts'
 export { advertisedPaths, createRouteHandler, MEMBER_SCAN_BUDGET_MS, ROUTES } from './routes.ts'
 export type { RouteDeps } from './routes.ts'
+export {
+  BUNDLES_DIR,
+  PROBE_TIMEOUT_MS,
+  ROUTE_FAMILIES,
+  bundleOf,
+  bundlesRootFromModule,
+  findBundlesRoot,
+} from './bundle.ts'
+export type { BundleCensus, BundleDeps, BundleEntry, BundleFamily, BundleResponse, BundleRow, ProbeOutcome } from './bundle.ts'
 
 /**
  * Mount the one fused prefix route.

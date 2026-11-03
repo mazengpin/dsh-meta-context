@@ -64,6 +64,7 @@ Importing a member's `createRouteHandler` instead would construct a **second** p
 | `/meta-context/api/folds` | GET | Fold rows. |
 | `/meta-context/api/admission` | GET | Drives the fold-admission gate with a probe (`?priced=&retain=`). |
 | `/meta-context/api/tuning` | GET | Context-assembly knobs, composed live from `s1cap`. |
+| `/meta-context/api/bundle` | GET | The meta bundle census: one row per `dsh-meta-*` package — present on disk, mounted or not, with its `package.json` identity. |
 
 `status` and `folds` get a **30 s** compose budget against the member's own 25 s scan. An 8 s budget was measured reporting a healthy member as unreachable, which is its own defect: a surface that can never derive its number is a worse instrument than one that knows it cannot.
 
@@ -78,7 +79,7 @@ Importing a member's `createRouteHandler` instead would construct a **second** p
 ```
 pnpm typecheck                      # exit 0
 pnpm run build                      # exit 0
-node verify/host-half.mjs           # 48 checks, exit 0 / 1 FAIL / 2 BLINDED
+node verify/host-half.mjs           # 51 checks, exit 0 / 1 FAIL / 2 BLINDED
 node verify/client-bundle.cjs lib/client.js
 node verify/falsify.mjs             # mutates source, rebuilds, requires RED, restores, requires GREEN
 ```
